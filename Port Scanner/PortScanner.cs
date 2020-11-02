@@ -27,6 +27,8 @@ namespace Port_Scanner
         // Two int vars which will later be assigned to user defined texbox entries in 'Scanner' tab
         private int startPort;
         private int endPoint;
+        // For the scan loop
+        private int portCounter = 0;
         public PortScanner()
         {
             InitializeComponent();
@@ -80,6 +82,10 @@ namespace Port_Scanner
             portCountListBox.Items.Clear();
             fromTextBox.Text = "";
             toTextBox.Text = "";
+            openPortsLabelDesc.Visible = false;
+            openPortsLabel.Visible = false;
+            openPortsLabel.Text = "";
+            portCounter = 0;
             // Disabled for now => See 'TODO' above...
             //TabNumber(isTrue);
 
@@ -168,52 +174,75 @@ namespace Port_Scanner
         {
             try
             {
+                // Exec these next 2 statements to prevent them from racking up a long list of appended item...personal pet peeve. Start a fresh scan each time with a fresh openPort counter
+                portCountListBox.Items.Clear();
+                portCounter = 0;
                 // Convert from/to textbox entries to int variables
+                bool isTrue = false;
                 startPort = Convert.ToInt32(fromTextBox.Text);
                 endPoint = Convert.ToInt32(toTextBox.Text);
-
-                // Reset the progress bar
-                scanProgressBar.Value = 0;
-
-                // Set max val for progress bar
-                scanProgressBar.Maximum = endPoint - startPort + 1;
-
-                // Using the cursors class, indicate to the user that the app is busy
-                Cursor.Current = Cursors.WaitCursor;
-
-                // Here we essentially follow the 'i is less than..etc, but we're swapping i with 'currPort' and incrementing while it's less than or equal to endPoint
-                for (int currPort = startPort; currPort <= endPoint; currPort++)
+                if (startPort > 0)
                 {
-                    // Create a new instance of TcpClient
-                    TcpClient tcpportScan = new TcpClient();
 
-                    try
+                    //}
+                    // Reset the progress bar
+                    scanProgressBar.Value = 0;
+
+                    // Set max val for progress bar
+                    scanProgressBar.Maximum = endPoint - startPort + 1;
+
+                    // Using the cursors class, indicate to the user that the app is busy
+                    Cursor.Current = Cursors.WaitCursor;
+
+                    // Here we essentially follow the 'i is less than..etc, but we're swapping i with 'currPort' and incrementing while it's less than or equal to endPoint
+                    for (int currPort = startPort; currPort <= endPoint; currPort++)
                     {
-                        // To connect to the current port using IP from the textbox entry and currPort as the 2nd parameter
-                        tcpportScan.Connect(ipAddressTextbox.Text, currPort);
-                        // If no exception, then that means the 'current port' is open
-                        portCountListBox.Items.Add("Port " + currPort + " is open." + Environment.NewLine);
+                        // Create a new instance of TcpClient
+                        TcpClient tcpportScan = new TcpClient();
 
-                    }
-                    catch
-                    {
+                        try
+                        {
+                            // To connect to the current port using IP from the textbox entry and currPort as the 2nd parameter
+                            tcpportScan.Connect(ipAddressTextbox.Text, currPort);
+                            // If no exception, then that means the 'current port' is open
+                            portCountListBox.Items.Add("Port " + currPort + " is open." + Environment.NewLine);
+                            // In order to increment the 'open ports found' box, I'm setting isTrue to True IF currport successfully connects (line above)
+                            isTrue = true;
+                            if (isTrue)
+                            {
+                                portCounter += 1;
+                            }
 
-                        // If there IS an exception, then the current port is closed
-                        portCountListBox.Items.Add("Port " + currPort + " is closed." + Environment.NewLine);
+                            openPortsLabelDesc.Visible = true;
+                            openPortsLabel.Visible = true;
+                            openPortsLabel.Text = portCounter.ToString();
+                            // Else the catch happens and no open port counting happens
+                        }
+                        catch
+                        {
+
+                            // If there IS an exception, then the current port is closed
+                            portCountListBox.Items.Add("Port " + currPort + " is closed." + Environment.NewLine);
+
+                        }
+                        // To increase the progress bar
+                        scanProgressBar.PerformStep();
                     }
-                    // To increase the progress bar
-                    scanProgressBar.PerformStep();
+                    // Set the cursor back to normal..for this app I set default to 'Hand'
+                    Cursor.Current = Cursors.Hand;
+                    MessageBox.Show("Thankyou for your patience. Kyle's TCP scanner has completed. Your results are now available to view.");
                 }
-                // Set the cursor back to normal..for this app I set default to 'Hand'
-                Cursor.Current = Cursors.Hand;
-                MessageBox.Show("Thankyou for your patience. Kyle's TCP scanner has completed. Your results are now available to view.");
+                else
+                {
+                    MessageBox.Show("Please enter a start port greater than zero.");
+                }
             }
-
             catch (Exception ex)
             {
 
                 MessageBox.Show(ex.Message);
             }
+
         }
         private void PortScanner_Load(object sender, EventArgs e)
         {

@@ -40,6 +40,7 @@
             this.ipListBox = new System.Windows.Forms.ListBox();
             this.getIPButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.portInfoPage = new System.Windows.Forms.TabPage();
+            this.scanProgressBar = new System.Windows.Forms.ProgressBar();
             this.fromTextBox = new System.Windows.Forms.TextBox();
             this.toTextBox = new System.Windows.Forms.TextBox();
             this.ipAddressTextbox = new System.Windows.Forms.TextBox();
@@ -49,7 +50,8 @@
             this.scanPortsButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.portCountListBox = new System.Windows.Forms.ListBox();
             this.materialTabSelect = new MaterialSkin.Controls.MaterialTabSelector();
-            this.scanProgressBar = new System.Windows.Forms.ProgressBar();
+            this.openPortsLabelDesc = new MaterialSkin.Controls.MaterialLabel();
+            this.openPortsLabel = new System.Windows.Forms.Label();
             this.tabToggle.SuspendLayout();
             this.ipInfoPage.SuspendLayout();
             this.portInfoPage.SuspendLayout();
@@ -221,6 +223,8 @@
             // 
             // portInfoPage
             // 
+            this.portInfoPage.Controls.Add(this.openPortsLabelDesc);
+            this.portInfoPage.Controls.Add(this.openPortsLabel);
             this.portInfoPage.Controls.Add(this.scanProgressBar);
             this.portInfoPage.Controls.Add(this.fromTextBox);
             this.portInfoPage.Controls.Add(this.toTextBox);
@@ -237,6 +241,16 @@
             this.portInfoPage.TabIndex = 1;
             this.portInfoPage.Text = "Scanner";
             this.portInfoPage.UseVisualStyleBackColor = true;
+            // 
+            // scanProgressBar
+            // 
+            this.scanProgressBar.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.scanProgressBar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.scanProgressBar.Location = new System.Drawing.Point(19, 220);
+            this.scanProgressBar.Name = "scanProgressBar";
+            this.scanProgressBar.Size = new System.Drawing.Size(462, 29);
+            this.scanProgressBar.Step = 2;
+            this.scanProgressBar.TabIndex = 15;
             // 
             // fromTextBox
             // 
@@ -302,7 +316,7 @@
             this.scanPortsButton.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scanPortsButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.scanPortsButton.Icon = null;
-            this.scanPortsButton.Location = new System.Drawing.Point(377, 21);
+            this.scanPortsButton.Location = new System.Drawing.Point(231, 24);
             this.scanPortsButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.scanPortsButton.Name = "scanPortsButton";
             this.scanPortsButton.Primary = true;
@@ -335,15 +349,32 @@
             this.materialTabSelect.Size = new System.Drawing.Size(638, 30);
             this.materialTabSelect.TabIndex = 2;
             // 
-            // scanProgressBar
+            // openPortsLabelDesc
             // 
-            this.scanProgressBar.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.scanProgressBar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.scanProgressBar.Location = new System.Drawing.Point(19, 220);
-            this.scanProgressBar.Name = "scanProgressBar";
-            this.scanProgressBar.Size = new System.Drawing.Size(462, 29);
-            this.scanProgressBar.Step = 2;
-            this.scanProgressBar.TabIndex = 15;
+            this.openPortsLabelDesc.AutoSize = true;
+            this.openPortsLabelDesc.BackColor = System.Drawing.SystemColors.Highlight;
+            this.openPortsLabelDesc.Depth = 0;
+            this.openPortsLabelDesc.Font = new System.Drawing.Font("Roboto", 11F);
+            this.openPortsLabelDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.openPortsLabelDesc.Location = new System.Drawing.Point(361, 19);
+            this.openPortsLabelDesc.MouseState = MaterialSkin.MouseState.HOVER;
+            this.openPortsLabelDesc.Name = "openPortsLabelDesc";
+            this.openPortsLabelDesc.Size = new System.Drawing.Size(83, 38);
+            this.openPortsLabelDesc.TabIndex = 17;
+            this.openPortsLabelDesc.Text = "Open Ports\r\nFound:";
+            this.openPortsLabelDesc.Visible = false;
+            // 
+            // openPortsLabel
+            // 
+            this.openPortsLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.openPortsLabel.Font = new System.Drawing.Font("Cambria", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.openPortsLabel.ForeColor = System.Drawing.Color.Blue;
+            this.openPortsLabel.Location = new System.Drawing.Point(450, 21);
+            this.openPortsLabel.Name = "openPortsLabel";
+            this.openPortsLabel.Size = new System.Drawing.Size(39, 32);
+            this.openPortsLabel.TabIndex = 16;
+            this.openPortsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.openPortsLabel.Visible = false;
             // 
             // PortScanner
             // 
@@ -390,6 +421,8 @@
         private System.Windows.Forms.TextBox toTextBox;
         private MaterialSkin.Controls.MaterialRaisedButton proceedButton;
         private System.Windows.Forms.ProgressBar scanProgressBar;
+        private MaterialSkin.Controls.MaterialLabel openPortsLabelDesc;
+        private System.Windows.Forms.Label openPortsLabel;
     }
 }
 
