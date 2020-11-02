@@ -22,6 +22,8 @@ namespace Port_Scanner
 {
     public partial class PortScanner : MaterialForm
     {
+        // To store values from portScanList box later..
+        List<string> resultsList = new List<string>();
         private string splitter = "";
         private string description = "";
         // Two int vars which will later be assigned to user defined texbox entries in 'Scanner' tab
@@ -48,26 +50,6 @@ namespace Port_Scanner
             foundIpLblDesc.Visible = true;
         }
 
-        //bool isTrue = false;
-
-        /* TODO => Why is Tab removal at runtime throwing an exception??
-        private bool TabNumber(bool value)
-        {
-
-            if (tabToggle.TabPages.Contains(portInfoPage))
-            {
-                value = true;
-
-                tabToggle.SelectedTab = ipInfoPage;
-                tabToggle.TabPages.RemoveAt(1);
-                // tabToggle.Controls.Remove(portInfoPage);
-            }
-            else
-            {
-                value = false;
-            }
-            return isTrue;
-        }*/
         private void DisableAndClear()
         {
             foundIpLbl.Visible = false;
@@ -86,9 +68,7 @@ namespace Port_Scanner
             openPortsLabel.Visible = false;
             openPortsLabel.Text = "";
             portCounter = 0;
-            // Disabled for now => See 'TODO' above...
-            //TabNumber(isTrue);
-
+            saveButton.Visible = false;
         }
         private void getIPButton_Click(object sender, EventArgs e)
         {
@@ -157,7 +137,6 @@ namespace Port_Scanner
                 MessageBox.Show("Please choose from one of the IPs and click the proceed button below.");
                 tabToggle.SelectedTab = ipInfoPage;
             }
-            //tabToggle.SelectedTab = portInfoPage;
         }
 
         private void clearButton_Click(object sender, EventArgs e)
@@ -172,13 +151,15 @@ namespace Port_Scanner
         }
         public void scanPortsButton_Click(object sender, EventArgs e)
         {
+            saveButton.Visible = false;
+            bool found = false;
+            // Exec these next 2 statements to prevent them from racking up a long list of appended item...personal pet peeve. Start a fresh scan each time with a fresh openPort counter
+            portCounter = 0;
+            openPortsLabel.Text = portCounter.ToString();
+            portCountListBox.Items.Clear();
             try
             {
-                // Exec these next 2 statements to prevent them from racking up a long list of appended item...personal pet peeve. Start a fresh scan each time with a fresh openPort counter
-                portCountListBox.Items.Clear();
-                portCounter = 0;
                 // Convert from/to textbox entries to int variables
-                bool isTrue = false;
                 startPort = Convert.ToInt32(fromTextBox.Text);
                 endPoint = Convert.ToInt32(toTextBox.Text);
                 if (startPort > 0)
@@ -205,10 +186,10 @@ namespace Port_Scanner
                             // To connect to the current port using IP from the textbox entry and currPort as the 2nd parameter
                             tcpportScan.Connect(ipAddressTextbox.Text, currPort);
                             // If no exception, then that means the 'current port' is open
-                            portCountListBox.Items.Add("Port " + currPort + " is open." + Environment.NewLine);
+                            portCountListBox.Items.Add("Port " + currPort.ToString() + " is OPEN." + Environment.NewLine);
                             // In order to increment the 'open ports found' box, I'm setting isTrue to True IF currport successfully connects (line above)
-                            isTrue = true;
-                            if (isTrue)
+                            found = true;
+                            if (found)
                             {
                                 portCounter += 1;
                             }
@@ -222,7 +203,7 @@ namespace Port_Scanner
                         {
 
                             // If there IS an exception, then the current port is closed
-                            portCountListBox.Items.Add("Port " + currPort + " is closed." + Environment.NewLine);
+                            portCountListBox.Items.Add("Port " + currPort.ToString() + " is closed." + Environment.NewLine);
 
                         }
                         // To increase the progress bar
@@ -230,7 +211,8 @@ namespace Port_Scanner
                     }
                     // Set the cursor back to normal..for this app I set default to 'Hand'
                     Cursor.Current = Cursors.Hand;
-                    MessageBox.Show("Thankyou for your patience. Kyle's TCP scanner has completed. Your results are now available to view.");
+                    MessageBox.Show("Thank you for your patience. Kyle's TCP scanner has completed. Your results are now available to view.");
+                    saveButton.Visible = true;
                 }
                 else
                 {
@@ -248,6 +230,53 @@ namespace Port_Scanner
         {
 
             tabToggle.TabPages.Remove(portInfoPage);
+        }
+
+        private void FormatForExcel(List<string> iList)
+        {
+            // Init a counter var and an instance of Writer
+            int position;
+            StreamWriter outputfile;
+            // Instantiate and instance of date time and format it to short-date string
+            var current = DateTime.Today;
+            string my_dateToday = current.ToShortDateString();
+            var saveFile = new SaveFileDialog();
+            // Prepop initial directory to user's home folder for convenience - they can choose to save elsewhere
+            saveFile.InitialDirectory = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%");
+            saveFile.Filter = "CSV (*.csv) |*.csv";
+
+            if (saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK == false)
+            {
+                MessageBox.Show("You canceled the operation.");
+
+            }
+            else if (saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+
+                outputfile = File.AppendText(saveFile.FileName);
+                // I converted the entire contents of the scanner listbox to string, so this will add all contents to my List parameter for each scan line
+                foreach (string result in portCountListBox.Items)
+                {
+                    iList.Add(result);
+                }
+                // Write in this order - the date, a blank line, and then each line from scan results
+                outputfile.WriteLine(my_dateToday);
+                outputfile.WriteLine();
+                for (position = 0; position < iList.Count; position++)
+                {
+                    outputfile.WriteLine(iList[position]);
+                }
+                outputfile.Close();
+                MessageBox.Show($"Data was succesfully written to: {saveFile.FileName} you may view the contents in Excel.");
+
+            }
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            scanProgressBar.Value = 0;
+            // Run my method
+            FormatForExcel(resultsList);
         }
     }
 }
