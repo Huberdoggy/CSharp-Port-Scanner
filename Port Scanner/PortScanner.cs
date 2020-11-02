@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 // For ipconfig.exe implementation
+using System.Net.Sockets;
 using System.Net;
 using System.Runtime.InteropServices.ComTypes;
 
@@ -23,6 +24,9 @@ namespace Port_Scanner
     {
         private string splitter = "";
         private string description = "";
+        // Two int vars which will later be assigned to user defined texbox entries in 'Scanner' tab
+        private int startPort;
+        private int endPoint;
         public PortScanner()
         {
             InitializeComponent();
@@ -72,6 +76,10 @@ namespace Port_Scanner
             getIPButton.Visible = true;
             proceedButton.Visible = false;
             ipAddressTextbox.Text = "";
+            scanProgressBar.Value = 0;
+            portCountListBox.Items.Clear();
+            fromTextBox.Text = "";
+            toTextBox.Text = "";
             // Disabled for now => See 'TODO' above...
             //TabNumber(isTrue);
 
@@ -158,9 +166,55 @@ namespace Port_Scanner
         }
         public void scanPortsButton_Click(object sender, EventArgs e)
         {
+            try
+            {
+                // Convert from/to textbox entries to int variables
+                startPort = Convert.ToInt32(fromTextBox.Text);
+                endPoint = Convert.ToInt32(toTextBox.Text);
 
+                // Reset the progress bar
+                scanProgressBar.Value = 0;
+
+                // Set max val for progress bar
+                scanProgressBar.Maximum = endPoint - startPort + 1;
+
+                // Using the cursors class, indicate to the user that the app is busy
+                Cursor.Current = Cursors.WaitCursor;
+
+                // Here we essentially follow the 'i is less than..etc, but we're swapping i with 'currPort' and incrementing while it's less than or equal to endPoint
+                for (int currPort = startPort; currPort <= endPoint; currPort++)
+                {
+                    // Create a new instance of TcpClient
+                    TcpClient tcpportScan = new TcpClient();
+
+                    try
+                    {
+                        // To connect to the current port using IP from the textbox entry and currPort as the 2nd parameter
+                        tcpportScan.Connect(ipAddressTextbox.Text, currPort);
+                        // If no exception, then that means the 'current port' is open
+                        portCountListBox.Items.Add("Port " + currPort + " is open." + Environment.NewLine);
+
+                    }
+                    catch
+                    {
+
+                        // If there IS an exception, then the current port is closed
+                        portCountListBox.Items.Add("Port " + currPort + " is closed." + Environment.NewLine);
+                    }
+                    // To increase the progress bar
+                    scanProgressBar.PerformStep();
+                }
+                // Set the cursor back to normal..for this app I set default to 'Hand'
+                Cursor.Current = Cursors.Hand;
+                MessageBox.Show("Thankyou for your patience. Kyle's TCP scanner has completed. Your results are now available to view.");
+            }
+
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
         }
-
         private void PortScanner_Load(object sender, EventArgs e)
         {
 

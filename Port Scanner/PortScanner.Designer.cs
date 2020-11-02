@@ -32,6 +32,7 @@
             this.materialSkinTitleLbl = new MaterialSkin.Controls.MaterialLabel();
             this.tabToggle = new MaterialSkin.Controls.MaterialTabControl();
             this.ipInfoPage = new System.Windows.Forms.TabPage();
+            this.proceedButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.foundIpLblDesc = new MaterialSkin.Controls.MaterialLabel();
             this.clearButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.exitButton = new MaterialSkin.Controls.MaterialRaisedButton();
@@ -39,17 +40,16 @@
             this.ipListBox = new System.Windows.Forms.ListBox();
             this.getIPButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.portInfoPage = new System.Windows.Forms.TabPage();
+            this.fromTextBox = new System.Windows.Forms.TextBox();
+            this.toTextBox = new System.Windows.Forms.TextBox();
+            this.ipAddressTextbox = new System.Windows.Forms.TextBox();
+            this.fromLabelDesc = new System.Windows.Forms.Label();
+            this.toLabelDesc = new System.Windows.Forms.Label();
+            this.ipAddressLabelDesc = new System.Windows.Forms.Label();
             this.scanPortsButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.portCountListBox = new System.Windows.Forms.ListBox();
             this.materialTabSelect = new MaterialSkin.Controls.MaterialTabSelector();
-            this.ipAddressLabelDesc = new System.Windows.Forms.Label();
-            this.toLabelDesc = new System.Windows.Forms.Label();
-            this.fromLabelDesc = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.ipAddressTextbox = new System.Windows.Forms.TextBox();
-            this.toTextBox = new System.Windows.Forms.TextBox();
-            this.fromTextBox = new System.Windows.Forms.TextBox();
-            this.proceedButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.scanProgressBar = new System.Windows.Forms.ProgressBar();
             this.tabToggle.SuspendLayout();
             this.ipInfoPage.SuspendLayout();
             this.portInfoPage.SuspendLayout();
@@ -102,6 +102,26 @@
             this.ipInfoPage.Text = "IP Info";
             this.ipInfoPage.UseVisualStyleBackColor = true;
             // 
+            // proceedButton
+            // 
+            this.proceedButton.AutoSize = true;
+            this.proceedButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.proceedButton.BackColor = System.Drawing.Color.Blue;
+            this.proceedButton.Depth = 0;
+            this.proceedButton.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.proceedButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.proceedButton.Icon = null;
+            this.proceedButton.Location = new System.Drawing.Point(180, 196);
+            this.proceedButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.proceedButton.Name = "proceedButton";
+            this.proceedButton.Primary = true;
+            this.proceedButton.Size = new System.Drawing.Size(177, 36);
+            this.proceedButton.TabIndex = 4;
+            this.proceedButton.Text = "Proceed To Next Step";
+            this.proceedButton.UseVisualStyleBackColor = false;
+            this.proceedButton.Visible = false;
+            this.proceedButton.Click += new System.EventHandler(this.proceedButton_Click);
+            // 
             // foundIpLblDesc
             // 
             this.foundIpLblDesc.AutoSize = true;
@@ -131,7 +151,7 @@
             this.clearButton.Name = "clearButton";
             this.clearButton.Primary = true;
             this.clearButton.Size = new System.Drawing.Size(63, 36);
-            this.clearButton.TabIndex = 5;
+            this.clearButton.TabIndex = 1;
             this.clearButton.Text = "Clear";
             this.clearButton.UseVisualStyleBackColor = false;
             this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
@@ -151,7 +171,7 @@
             this.exitButton.Name = "exitButton";
             this.exitButton.Primary = true;
             this.exitButton.Size = new System.Drawing.Size(50, 36);
-            this.exitButton.TabIndex = 4;
+            this.exitButton.TabIndex = 2;
             this.exitButton.Text = "Exit";
             this.exitButton.UseVisualStyleBackColor = false;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
@@ -178,7 +198,7 @@
             this.ipListBox.Name = "ipListBox";
             this.ipListBox.ScrollAlwaysVisible = true;
             this.ipListBox.Size = new System.Drawing.Size(166, 157);
-            this.ipListBox.TabIndex = 1;
+            this.ipListBox.TabIndex = 3;
             // 
             // getIPButton
             // 
@@ -201,10 +221,10 @@
             // 
             // portInfoPage
             // 
+            this.portInfoPage.Controls.Add(this.scanProgressBar);
             this.portInfoPage.Controls.Add(this.fromTextBox);
             this.portInfoPage.Controls.Add(this.toTextBox);
             this.portInfoPage.Controls.Add(this.ipAddressTextbox);
-            this.portInfoPage.Controls.Add(this.progressBar1);
             this.portInfoPage.Controls.Add(this.fromLabelDesc);
             this.portInfoPage.Controls.Add(this.toLabelDesc);
             this.portInfoPage.Controls.Add(this.ipAddressLabelDesc);
@@ -217,6 +237,61 @@
             this.portInfoPage.TabIndex = 1;
             this.portInfoPage.Text = "Scanner";
             this.portInfoPage.UseVisualStyleBackColor = true;
+            // 
+            // fromTextBox
+            // 
+            this.fromTextBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.fromTextBox.Location = new System.Drawing.Point(62, 56);
+            this.fromTextBox.Name = "fromTextBox";
+            this.fromTextBox.Size = new System.Drawing.Size(56, 22);
+            this.fromTextBox.TabIndex = 1;
+            // 
+            // toTextBox
+            // 
+            this.toTextBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toTextBox.Location = new System.Drawing.Point(149, 56);
+            this.toTextBox.Name = "toTextBox";
+            this.toTextBox.Size = new System.Drawing.Size(56, 22);
+            this.toTextBox.TabIndex = 2;
+            // 
+            // ipAddressTextbox
+            // 
+            this.ipAddressTextbox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ipAddressTextbox.ForeColor = System.Drawing.Color.Blue;
+            this.ipAddressTextbox.Location = new System.Drawing.Point(90, 18);
+            this.ipAddressTextbox.Name = "ipAddressTextbox";
+            this.ipAddressTextbox.Size = new System.Drawing.Size(100, 22);
+            this.ipAddressTextbox.TabIndex = 0;
+            // 
+            // fromLabelDesc
+            // 
+            this.fromLabelDesc.AutoSize = true;
+            this.fromLabelDesc.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.fromLabelDesc.Location = new System.Drawing.Point(16, 59);
+            this.fromLabelDesc.Name = "fromLabelDesc";
+            this.fromLabelDesc.Size = new System.Drawing.Size(39, 16);
+            this.fromLabelDesc.TabIndex = 7;
+            this.fromLabelDesc.Text = "From";
+            // 
+            // toLabelDesc
+            // 
+            this.toLabelDesc.AutoSize = true;
+            this.toLabelDesc.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toLabelDesc.Location = new System.Drawing.Point(124, 59);
+            this.toLabelDesc.Name = "toLabelDesc";
+            this.toLabelDesc.Size = new System.Drawing.Size(19, 16);
+            this.toLabelDesc.TabIndex = 6;
+            this.toLabelDesc.Text = "to";
+            // 
+            // ipAddressLabelDesc
+            // 
+            this.ipAddressLabelDesc.AutoSize = true;
+            this.ipAddressLabelDesc.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ipAddressLabelDesc.Location = new System.Drawing.Point(16, 21);
+            this.ipAddressLabelDesc.Name = "ipAddressLabelDesc";
+            this.ipAddressLabelDesc.Size = new System.Drawing.Size(77, 16);
+            this.ipAddressLabelDesc.TabIndex = 5;
+            this.ipAddressLabelDesc.Text = "IP Address:";
             // 
             // scanPortsButton
             // 
@@ -232,7 +307,7 @@
             this.scanPortsButton.Name = "scanPortsButton";
             this.scanPortsButton.Primary = true;
             this.scanPortsButton.Size = new System.Drawing.Size(104, 36);
-            this.scanPortsButton.TabIndex = 1;
+            this.scanPortsButton.TabIndex = 3;
             this.scanPortsButton.Text = "Scan Ports";
             this.scanPortsButton.UseVisualStyleBackColor = false;
             this.scanPortsButton.Click += new System.EventHandler(this.scanPortsButton_Click);
@@ -240,12 +315,13 @@
             // portCountListBox
             // 
             this.portCountListBox.FormattingEnabled = true;
+            this.portCountListBox.HorizontalExtent = 4;
             this.portCountListBox.ItemHeight = 16;
             this.portCountListBox.Location = new System.Drawing.Point(19, 82);
             this.portCountListBox.Name = "portCountListBox";
             this.portCountListBox.ScrollAlwaysVisible = true;
             this.portCountListBox.Size = new System.Drawing.Size(462, 132);
-            this.portCountListBox.TabIndex = 0;
+            this.portCountListBox.TabIndex = 4;
             // 
             // materialTabSelect
             // 
@@ -259,87 +335,15 @@
             this.materialTabSelect.Size = new System.Drawing.Size(638, 30);
             this.materialTabSelect.TabIndex = 2;
             // 
-            // ipAddressLabelDesc
+            // scanProgressBar
             // 
-            this.ipAddressLabelDesc.AutoSize = true;
-            this.ipAddressLabelDesc.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ipAddressLabelDesc.Location = new System.Drawing.Point(16, 21);
-            this.ipAddressLabelDesc.Name = "ipAddressLabelDesc";
-            this.ipAddressLabelDesc.Size = new System.Drawing.Size(77, 16);
-            this.ipAddressLabelDesc.TabIndex = 5;
-            this.ipAddressLabelDesc.Text = "IP Address:";
-            // 
-            // toLabelDesc
-            // 
-            this.toLabelDesc.AutoSize = true;
-            this.toLabelDesc.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.toLabelDesc.Location = new System.Drawing.Point(124, 59);
-            this.toLabelDesc.Name = "toLabelDesc";
-            this.toLabelDesc.Size = new System.Drawing.Size(19, 16);
-            this.toLabelDesc.TabIndex = 6;
-            this.toLabelDesc.Text = "to";
-            // 
-            // fromLabelDesc
-            // 
-            this.fromLabelDesc.AutoSize = true;
-            this.fromLabelDesc.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.fromLabelDesc.Location = new System.Drawing.Point(16, 59);
-            this.fromLabelDesc.Name = "fromLabelDesc";
-            this.fromLabelDesc.Size = new System.Drawing.Size(39, 16);
-            this.fromLabelDesc.TabIndex = 7;
-            this.fromLabelDesc.Text = "From";
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(19, 220);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(462, 29);
-            this.progressBar1.TabIndex = 11;
-            // 
-            // ipAddressTextbox
-            // 
-            this.ipAddressTextbox.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ipAddressTextbox.ForeColor = System.Drawing.Color.Blue;
-            this.ipAddressTextbox.Location = new System.Drawing.Point(90, 18);
-            this.ipAddressTextbox.Name = "ipAddressTextbox";
-            this.ipAddressTextbox.Size = new System.Drawing.Size(100, 22);
-            this.ipAddressTextbox.TabIndex = 12;
-            // 
-            // toTextBox
-            // 
-            this.toTextBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.toTextBox.Location = new System.Drawing.Point(149, 56);
-            this.toTextBox.Name = "toTextBox";
-            this.toTextBox.Size = new System.Drawing.Size(56, 22);
-            this.toTextBox.TabIndex = 13;
-            // 
-            // fromTextBox
-            // 
-            this.fromTextBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.fromTextBox.Location = new System.Drawing.Point(62, 56);
-            this.fromTextBox.Name = "fromTextBox";
-            this.fromTextBox.Size = new System.Drawing.Size(56, 22);
-            this.fromTextBox.TabIndex = 14;
-            // 
-            // proceedButton
-            // 
-            this.proceedButton.AutoSize = true;
-            this.proceedButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.proceedButton.BackColor = System.Drawing.Color.Blue;
-            this.proceedButton.Depth = 0;
-            this.proceedButton.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.proceedButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.proceedButton.Icon = null;
-            this.proceedButton.Location = new System.Drawing.Point(180, 196);
-            this.proceedButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.proceedButton.Name = "proceedButton";
-            this.proceedButton.Primary = true;
-            this.proceedButton.Size = new System.Drawing.Size(177, 36);
-            this.proceedButton.TabIndex = 7;
-            this.proceedButton.Text = "Proceed To Next Step";
-            this.proceedButton.UseVisualStyleBackColor = false;
-            this.proceedButton.Visible = false;
-            this.proceedButton.Click += new System.EventHandler(this.proceedButton_Click);
+            this.scanProgressBar.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.scanProgressBar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.scanProgressBar.Location = new System.Drawing.Point(19, 220);
+            this.scanProgressBar.Name = "scanProgressBar";
+            this.scanProgressBar.Size = new System.Drawing.Size(462, 29);
+            this.scanProgressBar.Step = 2;
+            this.scanProgressBar.TabIndex = 15;
             // 
             // PortScanner
             // 
@@ -381,11 +385,11 @@
         private System.Windows.Forms.Label fromLabelDesc;
         private System.Windows.Forms.Label toLabelDesc;
         private System.Windows.Forms.Label ipAddressLabelDesc;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.TextBox ipAddressTextbox;
         private System.Windows.Forms.TextBox fromTextBox;
         private System.Windows.Forms.TextBox toTextBox;
         private MaterialSkin.Controls.MaterialRaisedButton proceedButton;
+        private System.Windows.Forms.ProgressBar scanProgressBar;
     }
 }
 
