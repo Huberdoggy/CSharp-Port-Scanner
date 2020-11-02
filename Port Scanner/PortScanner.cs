@@ -239,7 +239,7 @@ namespace Port_Scanner
             StreamWriter outputfile;
             // Instantiate and instance of date time and format it to short-date string
             var current = DateTime.Today;
-            string my_dateToday = current.ToShortDateString();
+            string my_dateToday = "'" + current.ToShortDateString();
             var saveFile = new SaveFileDialog();
             // Prepop initial directory to user's home folder for convenience - they can choose to save elsewhere
             saveFile.InitialDirectory = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%");
