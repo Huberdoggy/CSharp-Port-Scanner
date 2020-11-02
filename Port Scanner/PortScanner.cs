@@ -15,12 +15,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 // For ipconfig.exe implementation
 using System.Net;
-
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Port_Scanner
 {
     public partial class PortScanner : MaterialForm
     {
+        private string splitter = "";
+        private string description = "";
         public PortScanner()
         {
             InitializeComponent();
@@ -40,6 +42,26 @@ namespace Port_Scanner
             foundIpLblDesc.Visible = true;
         }
 
+        //bool isTrue = false;
+
+        /* TODO => Why is Tab removal at runtime throwing an exception??
+        private bool TabNumber(bool value)
+        {
+
+            if (tabToggle.TabPages.Contains(portInfoPage))
+            {
+                value = true;
+
+                tabToggle.SelectedTab = ipInfoPage;
+                tabToggle.TabPages.RemoveAt(1);
+                // tabToggle.Controls.Remove(portInfoPage);
+            }
+            else
+            {
+                value = false;
+            }
+            return isTrue;
+        }*/
         private void DisableAndClear()
         {
             foundIpLbl.Visible = false;
@@ -48,6 +70,11 @@ namespace Port_Scanner
             foundIpLbl.Text = "";
             getIPButton.Enabled = true;
             getIPButton.Visible = true;
+            proceedButton.Visible = false;
+            ipAddressTextbox.Text = "";
+            // Disabled for now => See 'TODO' above...
+            //TabNumber(isTrue);
+
         }
         private void getIPButton_Click(object sender, EventArgs e)
         {
@@ -73,8 +100,8 @@ namespace Port_Scanner
                         counter += 1;
                         foundIpLbl.Text = counter.ToString();
                         localIP = ip.ToString();
-                        string splitter = "******************";
-                        string description = "Found IP Address: " + Environment.NewLine;
+                        splitter = "******************";
+                        description = "Found IP Address: " + Environment.NewLine;
                         ipListBox.Items.Add(description);
                         ipListBox.Items.Add(splitter);
                         ipListBox.Items.Add(localIP);
@@ -87,6 +114,11 @@ namespace Port_Scanner
                 // So instead of doing a color change/disable, I'm going to keep it simple and do this.
                 getIPButton.Enabled = false;
                 getIPButton.Visible = false;
+                proceedButton.Visible = true;
+                if (tabToggle.TabPages.Count < 2)
+                {
+                    tabToggle.TabPages.Insert(1, portInfoPage);
+                }
 
             }
             catch (Exception ex)
@@ -96,6 +128,24 @@ namespace Port_Scanner
             }
 
         }
+        private void proceedButton_Click(object sender, EventArgs e)
+        {
+            string chosenItem = "";
+
+            if (ipListBox.SelectedIndex != -1 && ipListBox.SelectedItem.ToString() != splitter && ipListBox.SelectedItem.ToString() != description)
+            {
+                chosenItem = ipListBox.SelectedItem.ToString();
+                ipAddressTextbox.Text = chosenItem;
+                tabToggle.SelectedTab = portInfoPage;
+            }
+            else
+            {
+                MessageBox.Show("Please choose from one of the IPs and click the proceed button below.");
+                tabToggle.SelectedTab = ipInfoPage;
+            }
+            //tabToggle.SelectedTab = portInfoPage;
+        }
+
         private void clearButton_Click(object sender, EventArgs e)
         {
             // Run my consolidated method to clear everything and disable where appropriate
@@ -106,7 +156,16 @@ namespace Port_Scanner
             // End the program
             this.Close();
         }
+        public void scanPortsButton_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void PortScanner_Load(object sender, EventArgs e)
+        {
+
+            tabToggle.TabPages.Remove(portInfoPage);
+        }
     }
 }
 
