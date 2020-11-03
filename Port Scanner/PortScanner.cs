@@ -11,12 +11,15 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+// Just as a precaution to use the sleep timeout once => after the first Writer closes the file
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 // For ipconfig.exe implementation
 using System.Net.Sockets;
 using System.Net;
 using System.Runtime.InteropServices.ComTypes;
+using Syncfusion.XlsIO;
 
 namespace Port_Scanner
 {
@@ -31,9 +34,13 @@ namespace Port_Scanner
         private int endPoint;
         // For the scan loop
         private int portCounter = 0;
+        // Init a field for saveFile so that it can be used by 2 functions easily - first my CSV creator, then my XLSX formatter
+        SaveFileDialog saveFile = new SaveFileDialog();
         public PortScanner()
         {
             InitializeComponent();
+            //Register Syncfusion license
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzQ1NTg2QDMxMzgyZTMzMmUzMFRSMVNhbEtVbUhiemQ2SUR2aEgyRG1OK2JXZnJBTlhJUlJTK1lyd3FyU2M9");
             // Declare a variable to reference the material form
             var skinManager = MaterialSkinManager.Instance;
             // Skin manager add form to manage THIS form
@@ -232,15 +239,15 @@ namespace Port_Scanner
             tabToggle.TabPages.Remove(portInfoPage);
         }
 
-        private void FormatForExcel(List<string> iList)
+        private void FormatCSV(List<string> iList)
         {
             // Init a counter var and an instance of Writer
             int position;
             StreamWriter outputfile;
             // Instantiate and instance of date time and format it to short-date string
             var current = DateTime.Today;
-            string my_dateToday = "'" + current.ToShortDateString();
-            var saveFile = new SaveFileDialog();
+            string my_dateToday = current.ToShortDateString();
+            // var saveFile = new SaveFileDialog();
             // Prepop initial directory to user's home folder for convenience - they can choose to save elsewhere
             saveFile.InitialDirectory = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%");
             saveFile.Filter = "CSV (*.csv) |*.csv";
@@ -259,24 +266,74 @@ namespace Port_Scanner
                 {
                     iList.Add(result);
                 }
-                // Write in this order - the date, a blank line, and then each line from scan results
-                outputfile.WriteLine(my_dateToday);
-                outputfile.WriteLine();
+                // Write in this order so that my latter function can format it nicely using DATE/PORT as col headings, and the iterable data as row items per line
+
+                outputfile.WriteLine("DATE" + "," + "PORT");
                 for (position = 0; position < iList.Count; position++)
                 {
-                    outputfile.WriteLine(iList[position]);
+                    outputfile.WriteLine(my_dateToday + "," + iList[position]);
                 }
                 outputfile.Close();
-                MessageBox.Show($"Data was succesfully written to: {saveFile.FileName} you may view the contents in Excel.");
+                MessageBox.Show($"Data was succesfully written to: {saveFile.FileName} " +
+                    $"please wait a moment while your file is formatted....");
 
+            }
+        }
+
+        private void ConvertToXlsx()
+        {
+            try
+            {
+
+
+                using (ExcelEngine excelEngine = new ExcelEngine())
+                {
+                    IApplication application = excelEngine.Excel;
+                    application.DefaultVersion = ExcelVersion.Excel2016;
+
+                    //Preserve data types as per the value
+                    application.PreserveCSVDataTypes = true;
+
+                    //Read my CSV file
+                    Stream csvStream = File.OpenRead(Path.GetFullPath(saveFile.FileName));
+
+                    //Reads CSV stream as a workbook
+                    IWorkbook workbook = application.Workbooks.Open(csvStream);
+                    IWorksheet sheet = workbook.Worksheets[0];
+
+                    // Formatting CSV data as a table
+                    IListObject table = sheet.ListObjects.Create("PortsTable", sheet.UsedRange);
+                    table.BuiltInTableStyle = TableBuiltInStyles.TableStyleMedium6;
+                    IRange location = table.Location;
+                    location.AutofitColumns();
+
+                    // Save file in the same directory as the initial raw CSV from StreamWriter
+                    Stream excelStream;
+                    string path = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%\Desktop\makeover.xlsx");
+                    excelStream = File.Create(Path.GetFullPath(path));
+                    workbook.SaveAs(excelStream);
+                    // Release all resources => IMPORTANT!
+                    excelStream.Dispose();
+                    MessageBox.Show("SUCCESS! Your original file " + saveFile.FileName + " has been converted to .XLSX. You can view it at: " + path);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+
             scanProgressBar.Value = 0;
             // Run my method
-            FormatForExcel(resultsList);
+            FormatCSV(resultsList);
+            // Wait 3 seconds to ensure file is closed
+            Thread.Sleep(3000);
+            // Then, run my method using the Syncfusion package to format .xlsx nicely
+            ConvertToXlsx();
         }
     }
 }
