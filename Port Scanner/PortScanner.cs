@@ -50,7 +50,11 @@ namespace Port_Scanner
             // Make sure to set the TextShade to 'WHITE' if using the DARK theme
             SkinManager.ColorScheme = new ColorScheme(Primary.Blue800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.Lime400, TextShade.WHITE);
         }
-
+        private void PortScanner_Load(object sender, EventArgs e)
+        {
+            // Will be visible after they complete the first step
+            tabToggle.TabPages.Remove(portInfoPage);
+        }
         private void EnableIPCounter()
         {
             foundIpLbl.Visible = true;
@@ -133,17 +137,19 @@ namespace Port_Scanner
         {
             string chosenItem = "";
 
-            if (ipListBox.SelectedIndex != -1 && ipListBox.SelectedItem.ToString() != splitter && ipListBox.SelectedItem.ToString() != description)
+            if (ipListBox.SelectedIndex != -1 && ipListBox.SelectedItem.ToString() != splitter && ipListBox.SelectedItem.ToString() != description && ipListBox.SelectedItem != null)
             {
                 chosenItem = ipListBox.SelectedItem.ToString();
                 ipAddressTextbox.Text = chosenItem;
                 tabToggle.SelectedTab = portInfoPage;
+                MessageBox.Show("NOTICE: Scan can take a long time when range is high. For optimal results, consider using a start/end port range of roughly 20-30");
             }
             else
             {
-                MessageBox.Show("Please choose from one of the IPs and click the proceed button below.");
+                MessageBox.Show("For your convenience, the app can paste data into the next step. But you must select a valid IP from the list.");
                 tabToggle.SelectedTab = ipInfoPage;
             }
+
         }
 
         private void clearButton_Click(object sender, EventArgs e)
@@ -159,6 +165,7 @@ namespace Port_Scanner
         public void scanPortsButton_Click(object sender, EventArgs e)
         {
             saveButton.Visible = false;
+            // To track number of open ports identified (if any)
             bool found = false;
             // Exec these next 2 statements to prevent them from racking up a long list of appended item...personal pet peeve. Start a fresh scan each time with a fresh openPort counter
             portCounter = 0;
@@ -171,8 +178,6 @@ namespace Port_Scanner
                 endPoint = Convert.ToInt32(toTextBox.Text);
                 if (startPort > 0)
                 {
-
-                    //}
                     // Reset the progress bar
                     scanProgressBar.Value = 0;
 
@@ -233,12 +238,9 @@ namespace Port_Scanner
             }
 
         }
-        private void PortScanner_Load(object sender, EventArgs e)
-        {
 
-            tabToggle.TabPages.Remove(portInfoPage);
-        }
-
+        // Init this var to false
+        private bool didSave = false;
         private void FormatCSV(List<string> iList)
         {
             // Init a counter var and an instance of Writer
@@ -247,35 +249,38 @@ namespace Port_Scanner
             // Instantiate and instance of date time and format it to short-date string
             var current = DateTime.Today;
             string my_dateToday = current.ToShortDateString();
-            // var saveFile = new SaveFileDialog();
             // Prepop initial directory to user's home folder for convenience - they can choose to save elsewhere
-            saveFile.InitialDirectory = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%");
+            string csvpath = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%\Desktop");
+            saveFile.InitialDirectory = csvpath;
             saveFile.Filter = "CSV (*.csv) |*.csv";
 
             if (saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK == false)
             {
+                saveFile.Dispose();
                 MessageBox.Show("You canceled the operation.");
 
             }
             else if (saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
 
-                outputfile = File.AppendText(saveFile.FileName);
+                outputfile = File.CreateText(saveFile.FileName);
                 // I converted the entire contents of the scanner listbox to string, so this will add all contents to my List parameter for each scan line
                 foreach (string result in portCountListBox.Items)
                 {
                     iList.Add(result);
                 }
                 // Write in this order so that my latter function can format it nicely using DATE/PORT as col headings, and the iterable data as row items per line
+                outputfile.WriteLine("DATE" + "," + "IP ADDRESS" + "," + "PORT");
 
-                outputfile.WriteLine("DATE" + "," + "PORT");
                 for (position = 0; position < iList.Count; position++)
                 {
-                    outputfile.WriteLine(my_dateToday + "," + iList[position]);
+                    outputfile.WriteLine(my_dateToday + "," + ipAddressTextbox.Text + "," + iList[position]);
                 }
                 outputfile.Close();
                 MessageBox.Show($"Data was succesfully written to: {saveFile.FileName} " +
                     $"please wait a moment while your file is formatted....");
+                // Allow the next 'Convert' function to execute
+                didSave = true;
 
             }
         }
@@ -303,18 +308,61 @@ namespace Port_Scanner
 
                     // Formatting CSV data as a table
                     IListObject table = sheet.ListObjects.Create("PortsTable", sheet.UsedRange);
-                    table.BuiltInTableStyle = TableBuiltInStyles.TableStyleMedium6;
+                    table.BuiltInTableStyle = TableBuiltInStyles.TableStyleDark10;
                     IRange location = table.Location;
                     location.AutofitColumns();
 
+                    // Define/apply header style
+                    IStyle headerStyle = workbook.Styles.Add("HeaderStyle");
+                    headerStyle.BeginUpdate();
+                    headerStyle.Color = Syncfusion.Drawing.Color.LightGreen;
+                    headerStyle.Font.FontName = "Consolas";
+                    headerStyle.Font.Color = Syncfusion.XlsIO.ExcelKnownColors.Dark_blue;
+                    headerStyle.Font.Bold = true;
+                    headerStyle.Borders[ExcelBordersIndex.EdgeBottom].LineStyle = ExcelLineStyle.Medium;
+                    headerStyle.EndUpdate();
+
+
+                    // Define and apply a body style
+                    IStyle bodyStyle = workbook.Styles.Add("BodyStyle");
+                    bodyStyle.BeginUpdate();
+                    bodyStyle.Font.FontName = "Cambria";
+                    bodyStyle.Font.Color = Syncfusion.XlsIO.ExcelKnownColors.BlackCustom;
+                    bodyStyle.Borders[ExcelBordersIndex.EdgeRight].LineStyle = ExcelLineStyle.Medium;
+                    bodyStyle.Borders[ExcelBordersIndex.EdgeBottom].LineStyle = ExcelLineStyle.Medium;
+                    bodyStyle.Borders[ExcelBordersIndex.EdgeTop].LineStyle = ExcelLineStyle.Medium;
+                    bodyStyle.EndUpdate();
+
+                    // Modify this range seperately so it doesn't get messed up
+                    sheet.Range["A2:A100"].DateTime.ToShortDateString();
+                    sheet.Range["A2:A100"].HorizontalAlignment = ExcelHAlign.HAlignLeft;
+                    sheet.Range["A2:A100"].Borders[ExcelBordersIndex.EdgeLeft].LineStyle = ExcelLineStyle.Medium;
+                    sheet.Range["A2:A100"].Borders[ExcelBordersIndex.EdgeRight].LineStyle = ExcelLineStyle.Medium;
+                    sheet.Range["A2:A100"].Borders[ExcelBordersIndex.EdgeBottom].LineStyle = ExcelLineStyle.Medium;
+                    sheet.Range["A3:A100"].Borders[ExcelBordersIndex.EdgeTop].LineStyle = ExcelLineStyle.Medium;
+                    sheet.Range["B2:B100"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
+                    // Then Apply header style
+                    sheet.Rows[0].CellStyle = headerStyle;
+                    // And the body style
+                    sheet.Range["B2:C100"].CellStyle = bodyStyle;
+
+                    // Apply a conditional format for cells with the text 'Open'
+                    IConditionalFormats condition = sheet.Range["C2:C100"].ConditionalFormats;
+                    IConditionalFormat condition1 = condition.AddCondition();
+
+                    condition1.FormatType = ExcelCFType.SpecificText;
+                    condition1.Text = "Open";
+                    condition1.Operator = ExcelComparisonOperator.ContainsText;
+                    condition1.BackColor = ExcelKnownColors.Red;
+
                     // Save file in the same directory as the initial raw CSV from StreamWriter
                     Stream excelStream;
-                    string path = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%\Desktop\makeover.xlsx");
-                    excelStream = File.Create(Path.GetFullPath(path));
+                    string makeoverPath = Environment.ExpandEnvironmentVariables(@"C:\Users\%USERNAME%\Desktop\makeover.xlsx");
+                    excelStream = File.Create(Path.GetFullPath(makeoverPath));
                     workbook.SaveAs(excelStream);
                     // Release all resources => IMPORTANT!
                     excelStream.Dispose();
-                    MessageBox.Show("SUCCESS! Your original file " + saveFile.FileName + " has been converted to .XLSX. You can view it at: " + path);
+                    MessageBox.Show("SUCCESS! Your original file " + saveFile.FileName + " has been converted to .XLSX. You can view it at: " + makeoverPath);
                 }
             }
             catch (Exception ex)
@@ -326,14 +374,22 @@ namespace Port_Scanner
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-
             scanProgressBar.Value = 0;
             // Run my method
             FormatCSV(resultsList);
             // Wait 3 seconds to ensure file is closed
             Thread.Sleep(3000);
-            // Then, run my method using the Syncfusion package to format .xlsx nicely
-            ConvertToXlsx();
+            if (didSave == true)
+            {
+                // Then, run my method using the Syncfusion package to format .xlsx nicely
+                ConvertToXlsx();
+            }
+            else
+            {
+                // Prevents sporadic errors when canceling between saveFile dialogs
+                MessageBox.Show("Something happened. Raw .CSV was not formatted");
+            }
+
         }
     }
 }
