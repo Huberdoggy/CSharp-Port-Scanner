@@ -276,11 +276,17 @@ namespace Port_Scanner
                     iList.Add(result);
                 }
                 // Write in this order so that my latter function can format it nicely using DATE/PORT as col headings, and the iterable data as row items per line
-                outputfile.WriteLine("DATE" + "," + "IP ADDRESS" + "," + "PORT");
+                string first = iList[0];
+                outputfile.WriteLine("DATE" + "," + "PORT");
+                outputfile.WriteLine(my_dateToday);
+                outputfile.WriteLine("IP ADDRESS");
+                outputfile.Write(ipAddressTextbox.Text + "," + first);
+                outputfile.WriteLine();
 
-                for (position = 0; position < iList.Count; position++)
+                // Start at 1 so that my formatting ends up how I want it
+                for (position = 1; position < iList.Count; position++)
                 {
-                    outputfile.WriteLine(my_dateToday + "," + ipAddressTextbox.Text + "," + iList[position]);
+                    outputfile.WriteLine("," + iList[position]);
                 }
                 outputfile.Close();
                 MessageBox.Show($"Data was succesfully written to: {saveFile.FileName} " +
@@ -327,7 +333,11 @@ namespace Port_Scanner
                     headerStyle.Font.FontName = "Consolas";
                     headerStyle.Font.Color = Syncfusion.XlsIO.ExcelKnownColors.Dark_blue;
                     headerStyle.Font.Bold = true;
+                    headerStyle.Font.Size = 16;
+                    headerStyle.HorizontalAlignment = ExcelHAlign.HAlignCenter;
                     headerStyle.Borders[ExcelBordersIndex.EdgeBottom].LineStyle = ExcelLineStyle.Medium;
+                    headerStyle.Borders[ExcelBordersIndex.EdgeRight].LineStyle = ExcelLineStyle.Medium;
+                    headerStyle.Borders[ExcelBordersIndex.EdgeTop].LineStyle = ExcelLineStyle.Medium;
                     headerStyle.EndUpdate();
 
 
@@ -339,23 +349,47 @@ namespace Port_Scanner
                     bodyStyle.Borders[ExcelBordersIndex.EdgeRight].LineStyle = ExcelLineStyle.Medium;
                     bodyStyle.Borders[ExcelBordersIndex.EdgeBottom].LineStyle = ExcelLineStyle.Medium;
                     bodyStyle.Borders[ExcelBordersIndex.EdgeTop].LineStyle = ExcelLineStyle.Medium;
+                    bodyStyle.Borders[ExcelBordersIndex.EdgeLeft].LineStyle = ExcelLineStyle.Medium;
                     bodyStyle.EndUpdate();
 
+                    // Define a few additonal tweaks
+                    IStyle increaseStyle = workbook.Styles.Add("IncreaseStyle");
+                    increaseStyle.BeginUpdate();
+                    increaseStyle.Color = Syncfusion.Drawing.Color.LightSkyBlue;
+                    increaseStyle.Borders[ExcelBordersIndex.EdgeBottom].LineStyle = ExcelLineStyle.Medium;
+                    increaseStyle.Font.Size = 14;
+                    increaseStyle.Font.Bold = true;
+
                     // Modify this range seperately so it doesn't get messed up
-                    sheet.Range["A2:A100"].DateTime.ToShortDateString();
-                    sheet.Range["A2:A100"].HorizontalAlignment = ExcelHAlign.HAlignLeft;
-                    sheet.Range["A2:A100"].Borders[ExcelBordersIndex.EdgeLeft].LineStyle = ExcelLineStyle.Medium;
-                    sheet.Range["A2:A100"].Borders[ExcelBordersIndex.EdgeRight].LineStyle = ExcelLineStyle.Medium;
-                    sheet.Range["A2:A100"].Borders[ExcelBordersIndex.EdgeBottom].LineStyle = ExcelLineStyle.Medium;
-                    sheet.Range["A3:A100"].Borders[ExcelBordersIndex.EdgeTop].LineStyle = ExcelLineStyle.Medium;
-                    sheet.Range["B2:B100"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
+                    sheet.Range["A2:A2"].DateTime.ToShortDateString();
+                    sheet.Range["A2:A2"].CellStyle.Color = Syncfusion.Drawing.Color.LightSkyBlue;
+                    sheet.Range["A2:A2"].CellStyle.Font.Bold = true;
+                    sheet.Range["A2:A2"].CellStyle.Font.Size = 14;
+                    sheet.Range["A2:A4"].HorizontalAlignment = ExcelHAlign.HAlignLeft;
+                    sheet.Range["A2:A4"].Borders[ExcelBordersIndex.EdgeLeft].LineStyle = ExcelLineStyle.Medium;
+                    sheet.Range["A2:A2"].Borders[ExcelBordersIndex.EdgeRight].LineStyle = ExcelLineStyle.Medium;
+                    sheet.Range["A2:A4"].Borders[ExcelBordersIndex.EdgeBottom].LineStyle = ExcelLineStyle.Medium;
+                    sheet.Range["A3:A4"].Borders[ExcelBordersIndex.EdgeTop].LineStyle = ExcelLineStyle.Medium;
+                    sheet.Range["B1:B100"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
+                    sheet.Range["A1:A1"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
+                    sheet.Range["A3:A3"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
+                    sheet.Range["B2:B3"].CellStyle.Color = Syncfusion.Drawing.Color.Black;
+
+                    // Custom widths
+                    sheet.Columns[0].ColumnWidth = 20.00;
+
                     // Then Apply header style
-                    sheet.Rows[0].CellStyle = headerStyle;
+                    sheet.Range["A1:A1"].CellStyle = headerStyle;
+                    sheet.Range["A3:A3"].CellStyle = headerStyle;
+                    sheet.Range["B1:B1"].CellStyle = headerStyle;
                     // And the body style
-                    sheet.Range["B2:C100"].CellStyle = bodyStyle;
+                    sheet.Range["A4:A4"].CellStyle = bodyStyle;
+                    sheet.Range["B4:B100"].CellStyle = bodyStyle;
+                    // Additions
+                    sheet.Range["A4:A4"].CellStyle = increaseStyle;
 
                     // Apply a conditional format for cells with the text 'Open'
-                    IConditionalFormats condition = sheet.Range["C2:C100"].ConditionalFormats;
+                    IConditionalFormats condition = sheet.Range["B4:B100"].ConditionalFormats;
                     IConditionalFormat condition1 = condition.AddCondition();
 
                     condition1.FormatType = ExcelCFType.SpecificText;
@@ -398,6 +432,8 @@ namespace Port_Scanner
                     // I'm doing this to force the reclamation of resources/memory since I was getting errors that the original file was still in use
                     System.GC.Collect();
                     System.GC.WaitForPendingFinalizers();
+                    // Call it one more time to ensure cleanup of dead objects
+                    System.GC.Collect();
                     // Now, finally, delete the original CSV so that only the new prettified .XSLX remains in the directory path
                     File.Delete(saveFile.FileName);
                 }
