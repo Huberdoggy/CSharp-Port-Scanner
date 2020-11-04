@@ -135,21 +135,27 @@ namespace Port_Scanner
         }
         private void proceedButton_Click(object sender, EventArgs e)
         {
-            string chosenItem = "";
 
-            if (ipListBox.SelectedIndex != -1 && ipListBox.SelectedItem.ToString() != splitter && ipListBox.SelectedItem.ToString() != description && ipListBox.SelectedItem != null)
+            string chosenItem = "";
+            // A temporary workaround so that they cant select whitespace and proceed
+            if (ipListBox.SelectedIndex == 3 || ipListBox.SelectedIndex > 6)
+            {
+                MessageBox.Show("For your convenience, the app can paste data into the next step. But you must select a valid IP from the list.");
+                tabToggle.SelectedTab = ipInfoPage;
+            }
+            // If they make a selection (not whitespace) and selection is not equal to my text headings in the listbox (i.e make them select from a valid IP address)
+            else if (ipListBox.SelectedIndex != -1 && ipListBox.SelectedItem.ToString() != splitter && ipListBox.SelectedItem.ToString() != description && ipListBox.SelectedItem != null)
             {
                 chosenItem = ipListBox.SelectedItem.ToString();
                 ipAddressTextbox.Text = chosenItem;
                 tabToggle.SelectedTab = portInfoPage;
                 MessageBox.Show("NOTICE: Scan can take a long time when range is high. For optimal results, consider using a start/end port range of roughly 20-30");
             }
-            else
+            else // If null and click proceed
             {
                 MessageBox.Show("For your convenience, the app can paste data into the next step. But you must select a valid IP from the list.");
                 tabToggle.SelectedTab = ipInfoPage;
             }
-
         }
 
         private void clearButton_Click(object sender, EventArgs e)
@@ -284,15 +290,17 @@ namespace Port_Scanner
 
             }
         }
-
+        // Will track the completion of the XlSX conversion status
+        private bool prettified = false;
         private void ConvertToXlsx()
         {
+
             try
             {
 
-
                 using (ExcelEngine excelEngine = new ExcelEngine())
                 {
+
                     IApplication application = excelEngine.Excel;
                     application.DefaultVersion = ExcelVersion.Excel2016;
 
@@ -363,6 +371,8 @@ namespace Port_Scanner
                     // Release all resources => IMPORTANT!
                     excelStream.Dispose();
                     MessageBox.Show("SUCCESS! Your original file " + saveFile.FileName + " has been converted to .XLSX. You can view it at: " + makeoverPath);
+                    // Flip this on so that below I can safely delete the ugly .CSV original file
+                    prettified = true;
                 }
             }
             catch (Exception ex)
@@ -383,6 +393,18 @@ namespace Port_Scanner
             {
                 // Then, run my method using the Syncfusion package to format .xlsx nicely
                 ConvertToXlsx();
+                if (prettified == true)
+                {
+                    // I'm doing this to force the reclamation of resources/memory since I was getting errors that the original file was still in use
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    // Now, finally, delete the original CSV so that only the new prettified .XSLX remains in the directory path
+                    File.Delete(saveFile.FileName);
+                }
+                else
+                {
+                    MessageBox.Show("Something happened. CSV was NOT converted to .XLSX");
+                }
             }
             else
             {
