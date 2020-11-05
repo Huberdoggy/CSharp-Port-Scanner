@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PortScanner));
             this.materialSkinTitleLbl = new MaterialSkin.Controls.MaterialLabel();
             this.tabToggle = new MaterialSkin.Controls.MaterialTabControl();
@@ -54,6 +55,17 @@
             this.portCountListBox = new System.Windows.Forms.ListBox();
             this.materialTabSelect = new MaterialSkin.Controls.MaterialTabSelector();
             this.backButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip3 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip4 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip5 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip6 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip7 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip8 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip9 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip10 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip11 = new System.Windows.Forms.ToolTip(this.components);
             this.tabToggle.SuspendLayout();
             this.ipInfoPage.SuspendLayout();
             this.portInfoPage.SuspendLayout();
@@ -84,6 +96,7 @@
             this.tabToggle.MouseState = MaterialSkin.MouseState.HOVER;
             this.tabToggle.Name = "tabToggle";
             this.tabToggle.SelectedIndex = 0;
+            this.tabToggle.ShowToolTips = true;
             this.tabToggle.Size = new System.Drawing.Size(523, 288);
             this.tabToggle.TabIndex = 1;
             // 
@@ -122,6 +135,7 @@
             this.proceedButton.Size = new System.Drawing.Size(177, 36);
             this.proceedButton.TabIndex = 4;
             this.proceedButton.Text = "Proceed To Next Step";
+            this.toolTip6.SetToolTip(this.proceedButton, resources.GetString("proceedButton.ToolTip"));
             this.proceedButton.UseVisualStyleBackColor = false;
             this.proceedButton.Visible = false;
             this.proceedButton.Click += new System.EventHandler(this.proceedButton_Click);
@@ -157,6 +171,7 @@
             this.clearButton.Size = new System.Drawing.Size(63, 36);
             this.clearButton.TabIndex = 1;
             this.clearButton.Text = "Clear";
+            this.toolTip5.SetToolTip(this.clearButton, "This will clear all form field data on each program tab.");
             this.clearButton.UseVisualStyleBackColor = false;
             this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
@@ -177,6 +192,8 @@
             this.exitButton.Size = new System.Drawing.Size(50, 36);
             this.exitButton.TabIndex = 2;
             this.exitButton.Text = "Exit";
+            this.toolTip4.SetToolTip(this.exitButton, "For your convenience, you may end the program at anytime\r\nby pressing the ALT+X c" +
+        "ombo. Alternatively, return here and\r\nclick the button.");
             this.exitButton.UseVisualStyleBackColor = false;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
@@ -203,6 +220,7 @@
             this.ipListBox.ScrollAlwaysVisible = true;
             this.ipListBox.Size = new System.Drawing.Size(166, 157);
             this.ipListBox.TabIndex = 3;
+            this.toolTip7.SetToolTip(this.ipListBox, resources.GetString("ipListBox.ToolTip"));
             // 
             // getIPButton
             // 
@@ -220,6 +238,9 @@
             this.getIPButton.Size = new System.Drawing.Size(150, 36);
             this.getIPButton.TabIndex = 0;
             this.getIPButton.Text = "Get My IP Address";
+            this.toolTip3.SetToolTip(this.getIPButton, "Begin by pressing this button to scan your local network and\r\nidentify your machi" +
+        "ne\'s IP address. This will be based on your\r\ncurrent hardware NIC configuration " +
+        "and adapter settings.");
             this.getIPButton.UseVisualStyleBackColor = false;
             this.getIPButton.Click += new System.EventHandler(this.getIPButton_Click);
             // 
@@ -262,6 +283,7 @@
             this.saveButton.Size = new System.Drawing.Size(55, 36);
             this.saveButton.TabIndex = 18;
             this.saveButton.Text = "Save";
+            this.toolTip11.SetToolTip(this.saveButton, resources.GetString("saveButton.ToolTip"));
             this.saveButton.UseVisualStyleBackColor = false;
             this.saveButton.Visible = false;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
@@ -374,6 +396,7 @@
             this.scanPortsButton.Size = new System.Drawing.Size(104, 36);
             this.scanPortsButton.TabIndex = 3;
             this.scanPortsButton.Text = "Scan Ports";
+            this.toolTip10.SetToolTip(this.scanPortsButton, resources.GetString("scanPortsButton.ToolTip"));
             this.scanPortsButton.UseVisualStyleBackColor = false;
             this.scanPortsButton.Click += new System.EventHandler(this.scanPortsButton_Click);
             // 
@@ -399,6 +422,8 @@
             this.materialTabSelect.Name = "materialTabSelect";
             this.materialTabSelect.Size = new System.Drawing.Size(638, 30);
             this.materialTabSelect.TabIndex = 2;
+            this.toolTip2.SetToolTip(this.materialTabSelect, "Here, you can toggle between scan for any IP addresses identified on your DNS rou" +
+        "ting table,\r\nand searching for open TCP ports.");
             // 
             // backButton
             // 
@@ -416,8 +441,54 @@
             this.backButton.Size = new System.Drawing.Size(36, 36);
             this.backButton.TabIndex = 19;
             this.backButton.Text = "<=";
+            this.toolTip8.SetToolTip(this.backButton, "This button will quickly return you to the previous tab.");
             this.backButton.UseVisualStyleBackColor = false;
             this.backButton.Click += new System.EventHandler(this.backButton_Click);
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // toolTip2
+            // 
+            this.toolTip2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolTip2.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // toolTip3
+            // 
+            this.toolTip3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolTip3.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // toolTip4
+            // 
+            this.toolTip4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolTip4.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // toolTip5
+            // 
+            this.toolTip5.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolTip5.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // toolTip6
+            // 
+            this.toolTip6.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolTip6.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // toolTip7
+            // 
+            this.toolTip7.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolTip7.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // toolTip8
+            // 
+            this.toolTip8.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolTip8.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // toolTip9
+            // 
+            this.toolTip9.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.toolTip9.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
             // PortScanner
             // 
@@ -431,6 +502,9 @@
             this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PortScanner";
+            this.toolTip1.SetToolTip(this, "This is the starting point of the application. For further information,\r\nconsult " +
+        "the documentation via \'Show Help\' button or\r\nsee tool tips located on various co" +
+        "ntrols.");
             this.Load += new System.EventHandler(this.PortScanner_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PortScanner_KeyDown);
             this.tabToggle.ResumeLayout(false);
@@ -469,6 +543,17 @@
         private System.Windows.Forms.Label openPortsLabel;
         public MaterialSkin.Controls.MaterialRaisedButton saveButton;
         private MaterialSkin.Controls.MaterialRaisedButton backButton;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip toolTip2;
+        private System.Windows.Forms.ToolTip toolTip3;
+        private System.Windows.Forms.ToolTip toolTip5;
+        private System.Windows.Forms.ToolTip toolTip4;
+        private System.Windows.Forms.ToolTip toolTip6;
+        private System.Windows.Forms.ToolTip toolTip7;
+        private System.Windows.Forms.ToolTip toolTip8;
+        private System.Windows.Forms.ToolTip toolTip9;
+        private System.Windows.Forms.ToolTip toolTip11;
+        private System.Windows.Forms.ToolTip toolTip10;
     }
 }
 
