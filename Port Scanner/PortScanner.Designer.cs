@@ -40,6 +40,7 @@
             this.ipListBox = new System.Windows.Forms.ListBox();
             this.getIPButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.portInfoPage = new System.Windows.Forms.TabPage();
+            this.saveButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.openPortsLabelDesc = new MaterialSkin.Controls.MaterialLabel();
             this.openPortsLabel = new System.Windows.Forms.Label();
             this.scanProgressBar = new System.Windows.Forms.ProgressBar();
@@ -52,7 +53,7 @@
             this.scanPortsButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.portCountListBox = new System.Windows.Forms.ListBox();
             this.materialTabSelect = new MaterialSkin.Controls.MaterialTabSelector();
-            this.saveButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.backButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.tabToggle.SuspendLayout();
             this.ipInfoPage.SuspendLayout();
             this.portInfoPage.SuspendLayout();
@@ -224,6 +225,7 @@
             // 
             // portInfoPage
             // 
+            this.portInfoPage.Controls.Add(this.backButton);
             this.portInfoPage.Controls.Add(this.saveButton);
             this.portInfoPage.Controls.Add(this.openPortsLabelDesc);
             this.portInfoPage.Controls.Add(this.openPortsLabel);
@@ -243,6 +245,26 @@
             this.portInfoPage.TabIndex = 1;
             this.portInfoPage.Text = "Scanner";
             this.portInfoPage.UseVisualStyleBackColor = true;
+            // 
+            // saveButton
+            // 
+            this.saveButton.AutoSize = true;
+            this.saveButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.saveButton.BackColor = System.Drawing.Color.Blue;
+            this.saveButton.Depth = 0;
+            this.saveButton.Font = new System.Drawing.Font("Cambria", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.saveButton.Icon = null;
+            this.saveButton.Location = new System.Drawing.Point(231, 3);
+            this.saveButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Primary = true;
+            this.saveButton.Size = new System.Drawing.Size(55, 36);
+            this.saveButton.TabIndex = 18;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = false;
+            this.saveButton.Visible = false;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // openPortsLabelDesc
             // 
@@ -378,25 +400,24 @@
             this.materialTabSelect.Size = new System.Drawing.Size(638, 30);
             this.materialTabSelect.TabIndex = 2;
             // 
-            // saveButton
+            // backButton
             // 
-            this.saveButton.AutoSize = true;
-            this.saveButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.saveButton.BackColor = System.Drawing.Color.Blue;
-            this.saveButton.Depth = 0;
-            this.saveButton.Font = new System.Drawing.Font("Cambria", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.saveButton.Icon = null;
-            this.saveButton.Location = new System.Drawing.Point(231, 3);
-            this.saveButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Primary = true;
-            this.saveButton.Size = new System.Drawing.Size(55, 36);
-            this.saveButton.TabIndex = 18;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = false;
-            this.saveButton.Visible = false;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.backButton.AutoSize = true;
+            this.backButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.backButton.BackColor = System.Drawing.Color.Blue;
+            this.backButton.Depth = 0;
+            this.backButton.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.backButton.Icon = null;
+            this.backButton.Location = new System.Drawing.Point(299, 4);
+            this.backButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.backButton.Name = "backButton";
+            this.backButton.Primary = true;
+            this.backButton.Size = new System.Drawing.Size(36, 36);
+            this.backButton.TabIndex = 19;
+            this.backButton.Text = "<=";
+            this.backButton.UseVisualStyleBackColor = false;
+            this.backButton.Click += new System.EventHandler(this.backButton_Click);
             // 
             // PortScanner
             // 
@@ -411,6 +432,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PortScanner";
             this.Load += new System.EventHandler(this.PortScanner_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PortScanner_KeyDown);
             this.tabToggle.ResumeLayout(false);
             this.ipInfoPage.ResumeLayout(false);
             this.ipInfoPage.PerformLayout();
@@ -446,6 +468,7 @@
         private MaterialSkin.Controls.MaterialLabel openPortsLabelDesc;
         private System.Windows.Forms.Label openPortsLabel;
         public MaterialSkin.Controls.MaterialRaisedButton saveButton;
+        private MaterialSkin.Controls.MaterialRaisedButton backButton;
     }
 }
 

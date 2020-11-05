@@ -38,6 +38,8 @@ namespace Port_Scanner
         SaveFileDialog saveFile = new SaveFileDialog();
         public PortScanner()
         {
+            // Must be set TRUE in order for manual key press event shortcuts to be identified => in this case, I use ALT+X to end program if they don't want to click Exit
+            this.KeyPreview = true;
             InitializeComponent();
             //Register Syncfusion license
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzQ1NTg2QDMxMzgyZTMzMmUzMFRSMVNhbEtVbUhiemQ2SUR2aEgyRG1OK2JXZnJBTlhJUlJTK1lyd3FyU2M9");
@@ -49,6 +51,20 @@ namespace Port_Scanner
             skinManager.Theme = MaterialSkinManager.Themes.DARK;
             // Make sure to set the TextShade to 'WHITE' if using the DARK theme
             SkinManager.ColorScheme = new ColorScheme(Primary.Blue800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.Lime400, TextShade.WHITE);
+
+        }
+        // Manually created this KeyDown event due to incompatibilites with the custom material skin on my Exit Button
+        private void PortScanner_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers == Keys.Alt)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.X:
+                        this.Close();
+                        break;
+                }
+            }
         }
         private void PortScanner_Load(object sender, EventArgs e)
         {
@@ -157,14 +173,24 @@ namespace Port_Scanner
                 tabToggle.SelectedTab = ipInfoPage;
             }
         }
+        private void backButton_Click(object sender, EventArgs e)
+        {
+            // Go back to the first tab
+            tabToggle.SelectedTab = ipInfoPage;
+        }
 
         private void clearButton_Click(object sender, EventArgs e)
         {
             // Run my consolidated method to clear everything and disable where appropriate
             DisableAndClear();
         }
+
+
         private void exitButton_Click(object sender, EventArgs e)
         {
+            {
+                this.Close();
+            }
             // End the program
             this.Close();
         }
@@ -361,6 +387,7 @@ namespace Port_Scanner
                     increaseStyle.Font.Bold = true;
 
                     // Modify this range seperately so it doesn't get messed up
+                    sheet.Range["A1:A1"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
                     sheet.Range["A2:A2"].DateTime.ToShortDateString();
                     sheet.Range["A2:A2"].CellStyle.Color = Syncfusion.Drawing.Color.LightSkyBlue;
                     sheet.Range["A2:A2"].CellStyle.Font.Bold = true;
@@ -370,9 +397,8 @@ namespace Port_Scanner
                     sheet.Range["A2:A2"].Borders[ExcelBordersIndex.EdgeRight].LineStyle = ExcelLineStyle.Medium;
                     sheet.Range["A2:A4"].Borders[ExcelBordersIndex.EdgeBottom].LineStyle = ExcelLineStyle.Medium;
                     sheet.Range["A3:A4"].Borders[ExcelBordersIndex.EdgeTop].LineStyle = ExcelLineStyle.Medium;
-                    sheet.Range["B1:B100"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
-                    sheet.Range["A1:A1"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
                     sheet.Range["A3:A3"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
+                    sheet.Range["B1:B100"].HorizontalAlignment = ExcelHAlign.HAlignCenter;
                     sheet.Range["B2:B3"].CellStyle.Color = Syncfusion.Drawing.Color.Black;
 
                     // Custom widths
@@ -386,7 +412,10 @@ namespace Port_Scanner
                     sheet.Range["A4:A4"].CellStyle = bodyStyle;
                     sheet.Range["B4:B100"].CellStyle = bodyStyle;
                     // Additions
+                    sheet.Range["A2:A2"].CellStyle.HorizontalAlignment = ExcelHAlign.HAlignCenter;
                     sheet.Range["A4:A4"].CellStyle = increaseStyle;
+                    sheet.Range["A4:A4"].CellStyle.HorizontalAlignment = ExcelHAlign.HAlignCenter;
+
 
                     // Apply a conditional format for cells with the text 'Open'
                     IConditionalFormats condition = sheet.Range["B4:B100"].ConditionalFormats;
@@ -449,6 +478,7 @@ namespace Port_Scanner
             }
 
         }
+
     }
 }
 
