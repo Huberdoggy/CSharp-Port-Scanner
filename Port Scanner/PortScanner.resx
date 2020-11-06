@@ -120,6 +120,34 @@
   <metadata name="ipInfoPage.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="helpProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>1096, 17</value>
+  </metadata>
+  <metadata name="toolTip6.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>502, 17</value>
+  </metadata>
+  <data name="proceedButton.ToolTip" xml:space="preserve">
+    <value>This button will bring you to the Scanner tab.
+It will automatically copy the IP address you select
+from your scan results, and paste it into the following step.
+See the tool-tip directly above for selection specific criteria.</value>
+  </data>
+  <metadata name="toolTip5.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>405, 17</value>
+  </metadata>
+  <metadata name="toolTip4.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>308, 17</value>
+  </metadata>
+  <metadata name="toolTip7.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>599, 17</value>
+  </metadata>
+  <data name="ipListBox.ToolTip" xml:space="preserve">
+    <value>In order to copy your chosen selection, you must select from a valid IP
+(192.XXX.XXX.XX). Attempting to select text or white-space will prompt a message-box
+notifying you as such. Alternatively, you may bypass this screen at any time by selecting
+the 'Scanner' tab above and manually entering your IP in the following step. NOTE: The 'Scanner'
+tab will only be visible after you click the 'Get My IP Address' button.</value>
+  </data>
   <metadata name="toolTip8.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>696, 17</value>
   </metadata>
@@ -148,34 +176,6 @@ for optimal performace. See documenation concering Windows
 command line arguments to better understand choosing a small
 range with anticipated 'Open' ports.</value>
   </data>
-  <metadata name="toolTip6.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>502, 17</value>
-  </metadata>
-  <data name="proceedButton.ToolTip" xml:space="preserve">
-    <value>This button will bring you to the Scanner tab.
-It will automatically copy the IP address you select
-from your scan results, and paste it into the following step.
-See the tool-tip directly above for selection specific criteria.</value>
-  </data>
-  <metadata name="toolTip5.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>405, 17</value>
-  </metadata>
-  <metadata name="toolTip4.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>308, 17</value>
-  </metadata>
-  <metadata name="toolTip7.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>599, 17</value>
-  </metadata>
-  <data name="ipListBox.ToolTip" xml:space="preserve">
-    <value>In order to copy your chosen selection, you must select from a valid IP
-(192.XXX.XXX.XX). Attempting to select text or white-space will prompt a message-box
-notifying you as such. Alternatively, you may bypass this screen at any time by selecting
-the 'Scanner' tab above and manually entering your IP in the following step. NOTE: The 'Scanner'
-tab will only be visible after you click the 'Get My IP Address' button.</value>
-  </data>
-  <metadata name="toolTip3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>211, 17</value>
-  </metadata>
   <metadata name="materialTabSelect.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

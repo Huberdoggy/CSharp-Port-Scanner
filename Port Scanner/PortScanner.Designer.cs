@@ -41,6 +41,7 @@
             this.ipListBox = new System.Windows.Forms.ListBox();
             this.getIPButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.portInfoPage = new System.Windows.Forms.TabPage();
+            this.backButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.saveButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.openPortsLabelDesc = new MaterialSkin.Controls.MaterialLabel();
             this.openPortsLabel = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@
             this.scanPortsButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.portCountListBox = new System.Windows.Forms.ListBox();
             this.materialTabSelect = new MaterialSkin.Controls.MaterialTabSelector();
-            this.backButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip3 = new System.Windows.Forms.ToolTip(this.components);
@@ -66,6 +66,8 @@
             this.toolTip9 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip10 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip11 = new System.Windows.Forms.ToolTip(this.components);
+            this.helpButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.tabToggle.SuspendLayout();
             this.ipInfoPage.SuspendLayout();
             this.portInfoPage.SuspendLayout();
@@ -104,6 +106,7 @@
             // 
             this.ipInfoPage.BackgroundImage = global::Port_Scanner.Properties.Resources.serverroom;
             this.ipInfoPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ipInfoPage.Controls.Add(this.helpButton);
             this.ipInfoPage.Controls.Add(this.proceedButton);
             this.ipInfoPage.Controls.Add(this.foundIpLblDesc);
             this.ipInfoPage.Controls.Add(this.clearButton);
@@ -267,6 +270,26 @@
             this.portInfoPage.Text = "Scanner";
             this.portInfoPage.UseVisualStyleBackColor = true;
             // 
+            // backButton
+            // 
+            this.backButton.AutoSize = true;
+            this.backButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.backButton.BackColor = System.Drawing.Color.Blue;
+            this.backButton.Depth = 0;
+            this.backButton.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.backButton.Icon = null;
+            this.backButton.Location = new System.Drawing.Point(299, 4);
+            this.backButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.backButton.Name = "backButton";
+            this.backButton.Primary = true;
+            this.backButton.Size = new System.Drawing.Size(36, 36);
+            this.backButton.TabIndex = 19;
+            this.backButton.Text = "<=";
+            this.toolTip8.SetToolTip(this.backButton, "This button will quickly return you to the previous tab.");
+            this.backButton.UseVisualStyleBackColor = false;
+            this.backButton.Click += new System.EventHandler(this.backButton_Click);
+            // 
             // saveButton
             // 
             this.saveButton.AutoSize = true;
@@ -425,26 +448,6 @@
             this.toolTip2.SetToolTip(this.materialTabSelect, "Here, you can toggle between scan for any IP addresses identified on your DNS rou" +
         "ting table,\r\nand searching for open TCP ports.");
             // 
-            // backButton
-            // 
-            this.backButton.AutoSize = true;
-            this.backButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.backButton.BackColor = System.Drawing.Color.Blue;
-            this.backButton.Depth = 0;
-            this.backButton.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.backButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.backButton.Icon = null;
-            this.backButton.Location = new System.Drawing.Point(299, 4);
-            this.backButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.backButton.Name = "backButton";
-            this.backButton.Primary = true;
-            this.backButton.Size = new System.Drawing.Size(36, 36);
-            this.backButton.TabIndex = 19;
-            this.backButton.Text = "<=";
-            this.toolTip8.SetToolTip(this.backButton, "This button will quickly return you to the previous tab.");
-            this.backButton.UseVisualStyleBackColor = false;
-            this.backButton.Click += new System.EventHandler(this.backButton_Click);
-            // 
             // toolTip1
             // 
             this.toolTip1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
@@ -490,6 +493,32 @@
             this.toolTip9.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.toolTip9.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
+            // helpButton
+            // 
+            this.helpButton.AutoSize = true;
+            this.helpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.helpButton.BackColor = System.Drawing.Color.Blue;
+            this.helpButton.Depth = 0;
+            this.helpButton.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.helpButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.helpProvider1.SetHelpNavigator(this.helpButton, System.Windows.Forms.HelpNavigator.TableOfContents);
+            this.helpButton.Icon = null;
+            this.helpButton.Location = new System.Drawing.Point(39, 101);
+            this.helpButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.helpButton.Name = "helpButton";
+            this.helpButton.Primary = true;
+            this.helpProvider1.SetShowHelp(this.helpButton, true);
+            this.helpButton.Size = new System.Drawing.Size(98, 36);
+            this.helpButton.TabIndex = 7;
+            this.helpButton.Text = "Show Help";
+            this.helpButton.UseVisualStyleBackColor = false;
+            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
+            // 
+            // helpProvider1
+            // 
+            this.helpProvider1.HelpNamespace = "F:\\Documents\\Visual Studio 2019\\Repos\\Final_Proj_CIS\\Port Scanner\\Port Scanner\\bi" +
+    "n\\Debug\\MyHelpFile.chm";
+            // 
             // PortScanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -500,8 +529,10 @@
             this.Controls.Add(this.tabToggle);
             this.Controls.Add(this.materialSkinTitleLbl);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.helpProvider1.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TableOfContents);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PortScanner";
+            this.helpProvider1.SetShowHelp(this, true);
             this.toolTip1.SetToolTip(this, "This is the starting point of the application. For further information,\r\nconsult " +
         "the documentation via \'Show Help\' button or\r\nsee tool tips located on various co" +
         "ntrols.");
@@ -554,6 +585,8 @@
         private System.Windows.Forms.ToolTip toolTip9;
         private System.Windows.Forms.ToolTip toolTip11;
         private System.Windows.Forms.ToolTip toolTip10;
+        private MaterialSkin.Controls.MaterialRaisedButton helpButton;
+        private System.Windows.Forms.HelpProvider helpProvider1;
     }
 }
 

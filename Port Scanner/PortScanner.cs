@@ -38,6 +38,7 @@ namespace Port_Scanner
         SaveFileDialog saveFile = new SaveFileDialog();
         public PortScanner()
         {
+
             // Must be set TRUE in order for manual key press event shortcuts to be identified => in this case, I use ALT+X to end program if they don't want to click Exit
             this.KeyPreview = true;
             InitializeComponent();
@@ -177,6 +178,11 @@ namespace Port_Scanner
         {
             // Go back to the first tab
             tabToggle.SelectedTab = ipInfoPage;
+        }
+        private void helpButton_Click(object sender, EventArgs e)
+        {
+            // Pass my help.chm file to the ShowHelp() method and pop it open in a new window
+            System.Windows.Forms.Help.ShowHelp(null, @"F:\Documents\Visual Studio 2019\Repos\Final_Proj_CIS\Port Scanner\Port Scanner\bin\Debug\MyHelpFile.chm");
         }
 
         private void clearButton_Click(object sender, EventArgs e)
@@ -478,6 +484,7 @@ namespace Port_Scanner
             }
 
         }
+
 
     }
 }
