@@ -17,6 +17,7 @@ namespace Port_Scanner
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new PortScanner());
+            
         }
     }
 }

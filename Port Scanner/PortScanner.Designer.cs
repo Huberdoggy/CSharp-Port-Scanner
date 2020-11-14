@@ -33,6 +33,7 @@
             this.materialSkinTitleLbl = new MaterialSkin.Controls.MaterialLabel();
             this.tabToggle = new MaterialSkin.Controls.MaterialTabControl();
             this.ipInfoPage = new System.Windows.Forms.TabPage();
+            this.helpButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.proceedButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.foundIpLblDesc = new MaterialSkin.Controls.MaterialLabel();
             this.clearButton = new MaterialSkin.Controls.MaterialRaisedButton();
@@ -66,8 +67,7 @@
             this.toolTip9 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip10 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip11 = new System.Windows.Forms.ToolTip(this.components);
-            this.helpButton = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.toolTip12 = new System.Windows.Forms.ToolTip(this.components);
             this.tabToggle.SuspendLayout();
             this.ipInfoPage.SuspendLayout();
             this.portInfoPage.SuspendLayout();
@@ -121,6 +121,27 @@
             this.ipInfoPage.TabIndex = 0;
             this.ipInfoPage.Text = "IP Info";
             this.ipInfoPage.UseVisualStyleBackColor = true;
+            // 
+            // helpButton
+            // 
+            this.helpButton.AutoSize = true;
+            this.helpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.helpButton.BackColor = System.Drawing.Color.Blue;
+            this.helpButton.Depth = 0;
+            this.helpButton.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.helpButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.helpButton.Icon = null;
+            this.helpButton.Location = new System.Drawing.Point(39, 101);
+            this.helpButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.helpButton.Name = "helpButton";
+            this.helpButton.Primary = true;
+            this.helpButton.Size = new System.Drawing.Size(98, 36);
+            this.helpButton.TabIndex = 7;
+            this.helpButton.Text = "Show Help";
+            this.toolTip12.SetToolTip(this.helpButton, "Opens the .chm help file index. You may also press\r\nF1 at any point during progra" +
+        "m runtime to display Help\r\n");
+            this.helpButton.UseVisualStyleBackColor = false;
+            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
             // 
             // proceedButton
             // 
@@ -493,32 +514,6 @@
             this.toolTip9.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.toolTip9.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
-            // helpButton
-            // 
-            this.helpButton.AutoSize = true;
-            this.helpButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.helpButton.BackColor = System.Drawing.Color.Blue;
-            this.helpButton.Depth = 0;
-            this.helpButton.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.helpButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.helpProvider1.SetHelpNavigator(this.helpButton, System.Windows.Forms.HelpNavigator.TableOfContents);
-            this.helpButton.Icon = null;
-            this.helpButton.Location = new System.Drawing.Point(39, 101);
-            this.helpButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.helpButton.Name = "helpButton";
-            this.helpButton.Primary = true;
-            this.helpProvider1.SetShowHelp(this.helpButton, true);
-            this.helpButton.Size = new System.Drawing.Size(98, 36);
-            this.helpButton.TabIndex = 7;
-            this.helpButton.Text = "Show Help";
-            this.helpButton.UseVisualStyleBackColor = false;
-            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
-            // 
-            // helpProvider1
-            // 
-            this.helpProvider1.HelpNamespace = "F:\\Documents\\Visual Studio 2019\\Repos\\Final_Proj_CIS\\Port Scanner\\Port Scanner\\bi" +
-    "n\\Debug\\MyHelpFile.chm";
-            // 
             // PortScanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -529,10 +524,8 @@
             this.Controls.Add(this.tabToggle);
             this.Controls.Add(this.materialSkinTitleLbl);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.helpProvider1.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.TableOfContents);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PortScanner";
-            this.helpProvider1.SetShowHelp(this, true);
             this.toolTip1.SetToolTip(this, "This is the starting point of the application. For further information,\r\nconsult " +
         "the documentation via \'Show Help\' button or\r\nsee tool tips located on various co" +
         "ntrols.");
@@ -586,7 +579,7 @@
         private System.Windows.Forms.ToolTip toolTip11;
         private System.Windows.Forms.ToolTip toolTip10;
         private MaterialSkin.Controls.MaterialRaisedButton helpButton;
-        private System.Windows.Forms.HelpProvider helpProvider1;
+        private System.Windows.Forms.ToolTip toolTip12;
     }
 }
 

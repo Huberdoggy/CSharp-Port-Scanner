@@ -5,6 +5,9 @@ using MaterialSkin;
 using System;
 //For StreamReader/Writer
 using System.IO;
+// For use with relative helpfile path
+using System.Reflection;
+///////////////////////////////////
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -29,6 +32,10 @@ namespace Port_Scanner
         List<string> resultsList = new List<string>();
         private string splitter = "";
         private string description = "";
+        // For use with relative helpfile path
+        private string executableLocation = "";
+        // For use with relative helpfile path
+        private string chmLocation = "";
         // Two int vars which will later be assigned to user defined texbox entries in 'Scanner' tab
         private int startPort;
         private int endPoint;
@@ -54,6 +61,13 @@ namespace Port_Scanner
             SkinManager.ColorScheme = new ColorScheme(Primary.Blue800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.Lime400, TextShade.WHITE);
 
         }
+        private void PortScanner_Load(object sender, EventArgs e)
+        {
+            this.KeyPreview = true;
+            this.KeyDown += new KeyEventHandler(PortScanner_KeyDown);
+            // Will be visible after they complete the first step
+            tabToggle.TabPages.Remove(portInfoPage);
+        }
         // Manually created this KeyDown event due to incompatibilites with the custom material skin on my Exit Button
         private void PortScanner_KeyDown(object sender, KeyEventArgs e)
         {
@@ -66,12 +80,16 @@ namespace Port_Scanner
                         break;
                 }
             }
+            // Run this if Darrell/the user hits F1. It MUST be run outside the switch case since it's not checking for an ALT+Key comobo...
+            else if (e.KeyCode.ToString() == "F1")
+            {
+                executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                chmLocation = Path.Combine(executableLocation, "MyHelpFile.chm");
+                System.Windows.Forms.Help.ShowHelp(null, chmLocation);
+            }
+
         }
-        private void PortScanner_Load(object sender, EventArgs e)
-        {
-            // Will be visible after they complete the first step
-            tabToggle.TabPages.Remove(portInfoPage);
-        }
+
         private void EnableIPCounter()
         {
             foundIpLbl.Visible = true;
@@ -181,8 +199,11 @@ namespace Port_Scanner
         }
         private void helpButton_Click(object sender, EventArgs e)
         {
-            // Pass my help.chm file to the ShowHelp() method and pop it open in a new window
-            System.Windows.Forms.Help.ShowHelp(null, @"F:\Documents\Visual Studio 2019\Repos\Final_Proj_CIS\Port Scanner\Port Scanner\bin\Debug\MyHelpFile.chm");
+            // Pass my help.chm file to the ShowHelp() method and pop it open in a new window. adjust this for relative path since it won't always be ref to my machine's drive structure
+            executableLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            chmLocation = Path.Combine(executableLocation, "MyHelpFile.chm");
+            System.Windows.Forms.Help.ShowHelp(null, chmLocation);
+
         }
 
         private void clearButton_Click(object sender, EventArgs e)
